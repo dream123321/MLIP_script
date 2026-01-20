@@ -1,3 +1,15 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+作者信息:
+    ============================================================
+    作者: 黄晶
+    单位: 南方科技大学
+    邮箱: 2760344463@qq.com
+    开发时间: 2026.1.20
+"""
+
+
 from ase.io import iread
 import matplotlib.pyplot as plt
 import numpy as np
