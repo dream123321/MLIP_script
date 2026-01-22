@@ -504,7 +504,7 @@ def main_relax():
 
     if args.calculator == 'vasp':
         # VASP计算器设置
-        os.environ['vasp_pp'] = '/share/home/xill/hj/app/vasp_pp'
+        os.environ['vasp_pp'] = '/share/home/xill/hj/app/vasp_pp'  #/share/home/xill/hj/app/vasp_pp/potpaw_PBE    下面需要跟个potpaw_PBE目录，里面就是所有赝势，会自动选择vasp推荐值。
         os.environ['num_cores'] = '64'
         os.environ['vasp_std'] = 'vasp_std'
         os.environ['vasp_out_path'] = 'vasp'
