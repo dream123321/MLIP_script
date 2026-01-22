@@ -625,8 +625,8 @@ def main_relax():
             'output_extxyz': results['output_files']['extxyz'],
             'output_vasp': results['output_files']['vasp'],
             'output_unconverged': results['output_files']['unconverged'] if not results['converged'] else None,
-            'mtp_potential': args.mtp_potential if args.calculator == 'mtp' else None,
-            'ele_list': args.ele_list if args.calculator == 'mtp' else None
+            'mtp_potential': args.mtp_potential if args.calculator == 'sus2' else None,
+            'ele_list': args.ele_list if args.calculator == 'sus2' else None
         }])
 
         csv_filename = f'optimization_results_{convergence_status}.csv'
