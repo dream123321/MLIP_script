@@ -571,7 +571,7 @@ def main_relax():
         constant_volume=args.constant_volume,
         out_process=args.out_process,
         fix_cell=args.fix_cell,
-        output_file_base=args.output
+        output_file_base=f'{args.output}_by_{args.calculator}'
     )
 
     # 打印结果
