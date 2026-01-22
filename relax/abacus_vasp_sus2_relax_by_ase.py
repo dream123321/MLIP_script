@@ -615,6 +615,7 @@ def main_relax():
             'max_force_eV_per_ang': results['max_force'],
             'target_fmax': args.fmax,
             'nsteps': results['nsteps'],
+            'fix_cell': args.fix_cell,
             'max_steps': args.max_steps,
             'volume_ang3': results['volume'],
             'total_time_s': results['total_time'],
