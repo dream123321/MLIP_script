@@ -295,7 +295,7 @@ class StructureOptimizer:
         self.max_steps = max_steps
         self.maxstep = maxstep
 
-    def relax(self, atoms, pressure=0.0, dim=3, constant_volume=False,out_process=False):
+    def relax(self, atoms, pressure=0.0, dim=3, constant_volume=False,out_process=False,fix_cell=False):
         """
         结构弛豫
 
@@ -316,23 +316,28 @@ class StructureOptimizer:
         # 设置cell filter的mask
         if dim == 2:
             # 2D材料：只优化z方向
-            mask = [False, False, True, True, True, True]
-            ucf = ExpCellFilter(
-                atoms,
-                scalar_pressure=pressure * GPa,
-                mask=mask,
-                constant_volume=constant_volume
-            )
+            if fix_cell == False:
+                mask = [False, False, True, True, True, True]
+                ucf = ExpCellFilter(
+                    atoms,
+                    scalar_pressure=pressure * GPa,
+                    mask=mask,
+                    constant_volume=constant_volume
+                )
+            else:
+                ucf = atoms
         else:
             # 3D材料：优化所有方向
-            mask = [True, True, True, True, True, True]
-            ucf = ExpCellFilter(
-                atoms,
-                scalar_pressure=pressure * GPa,
-                mask=mask,
-                constant_volume=constant_volume
-            )
-
+            if fix_cell == False:
+                mask = [True, True, True, True, True, True]
+                ucf = ExpCellFilter(
+                    atoms,
+                    scalar_pressure=pressure * GPa,
+                    mask=mask,
+                    constant_volume=constant_volume
+                )
+            else:
+                ucf = atoms
         # 使用BFGS优化器，但保存轨迹信息
         if out_process:
             optimizer = BFGS(ucf, maxstep=self.maxstep, logfile='optimization.log')
@@ -374,7 +379,7 @@ class StructureOptimizer:
 
         return relaxed_atoms, optimization_info
 
-    def optimize(self, atoms, pressure=0.0, dim=3, constant_volume=False,out_process=False,
+    def optimize(self, atoms, pressure=0.0, dim=3, constant_volume=False,out_process=False,fix_cell=False,
                  output_file_base='optimized'):
         """
         执行结构优化并返回结果
@@ -394,7 +399,7 @@ class StructureOptimizer:
         start_time = time.time()
 
         # 执行优化
-        relaxed_atoms, opt_info = self.relax(atoms, pressure, dim, constant_volume, out_process)
+        relaxed_atoms, opt_info = self.relax(atoms, pressure, dim, constant_volume, out_process,fix_cell)
 
         # 获取结果
         forces = relaxed_atoms.get_forces()
@@ -473,8 +478,10 @@ def main_relax():
                         default='sus2', help='计算器类型(默认sus2)')
     parser.add_argument('--dim', type=int, choices=[2, 3], default=3, help='维度（2D或3D）(默认值3)')
     parser.add_argument('--pressure', type=float, default=0.0, help='外部压强（GPa）(默认值0.0)')
+    parser.add_argument('--fix_cell', action='store_true',
+                        help='是否固定晶格弛豫(默认不固定)，加了--fix_cell表示固定')
     parser.add_argument('--constant_volume', action='store_true',
-                        help='是否保持体积不变')
+                        help='是否保持体积不变(默认不保持)，加了--constant_volume表示保持')
     parser.add_argument('--output', type=str, default='optimized',
                         help='输出文件的基础名（不含扩展名）')
     parser.add_argument('--fmax', type=float, default=0.03, help='力收敛标准（eV/Å）(默认值0.03)')
@@ -563,6 +570,7 @@ def main_relax():
         dim=args.dim,
         constant_volume=args.constant_volume,
         out_process=args.out_process,
+        fix_cell=args.fix_cell,
         output_file_base=args.output
     )
 
@@ -571,6 +579,7 @@ def main_relax():
     print("优化结果摘要:")
     print(f"  是否收敛: {results['converged']}")
     print(f"  迭代步数: {results['nsteps']}")
+    print(f"  fix_cell: {args.fix_cell}")
     print(f"  总能: {results['energy']:.6f} eV")
     print(f"  最大力: {results['max_force']:.6f} eV/Å (目标: {args.fmax} eV/Å)")
     print(f"  体积: {results['volume']:.3f} Å³")
