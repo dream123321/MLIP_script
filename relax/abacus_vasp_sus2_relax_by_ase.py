@@ -462,6 +462,7 @@ def main_relax():
 示例:
   python abacus_vasp_sus2_relax_by_ase.py 407.vasp --calculator vasp  #注意修改程序位置，和调用的核数(os.environ中)，以及赝势的选择。（CalculatorFactory类中有参数设置）
   python abacus_vasp_sus2_relax_by_ase.py 407.vasp --calculator sus2 --mtp_potential current.mtp --ele_list Na Al Si S Ge Sn --out_process #通过自己修改元素默认值，可以避免手动输入
+  python abacus_vasp_sus2_relax_by_ase.py 407.vasp --calculator abacus  #用abacus需要特殊安装ase-abacus版本 https://gitlab.com/1041176461/ase-abacus
   
 
         """
