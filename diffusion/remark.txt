@@ -1,0 +1,1 @@
+python lmp_main.py ans 可以得到结果，命令行显示部分内容，以及详细信息在work/371/results中
