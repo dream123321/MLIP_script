@@ -1,1 +1,1 @@
-python lmp_main.py ans 可以得到结果，命令行显示部分内容，以及详细信息在work/371/results中
+python lmp_main.py ans 可以得到结果，命令行显示部分内容，以及详细信息在work/371/results中，具体离子电导率以CSV文件中的为准，拟合结果的仅供参考。
