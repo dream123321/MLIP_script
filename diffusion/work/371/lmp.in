@@ -1,0 +1,91 @@
+
+## 
+units       metal
+dimension   3
+boundary    p p p
+atom_style  atomic
+box         tilt large
+read_data   data.in
+
+neigh_modify    every 1 delay 0 check no
+
+pair_style      mlip mlip.ini
+pair_coeff      * *
+
+##################################################################################
+
+#variable        T               equal 900
+#variable        eql_step        equal 10000000
+#variable        rd_seed         equal 666666
+variable        P           equal 1.0    # 目标压力 (atm)
+
+variable        temp_damp   equal 0.3  # tau_NVT = timestep * 100  温度松弛时间
+variable        press_damp  equal 3.0 # press_damp = timestep * 1000  压力松弛时间
+
+variable        t_step      equal 0.003
+variable        rlx_step    equal 0
+
+variable        thermo_freq equal 20000
+variable        dump_freq   equal 35000
+
+group Na type 1
+group S type 2
+group Zn type 4
+group Zr type 5
+
+
+thermo_style    custom step pe ke etotal press lx ly lz vol density
+thermo          5000
+
+
+min_style cg
+minimize 1.0e-8 1.0e-10 5000 100000
+write_data relaxed_structure.data   
+reset_timestep  0
+
+
+velocity        all create ${T} ${rd_seed} dist gaussian
+
+fix             1 all npt temp ${T} ${T} ${temp_damp} tri ${P} ${P} ${press_damp}
+timestep        ${t_step}
+run             ${rlx_step}
+unfix           1
+write_restart   npt.restart
+
+reset_timestep  0
+
+##################################################################################
+
+## nvt-equal
+fix             equil all nvt temp ${T} ${T} ${temp_damp}
+timestep        ${t_step}
+
+# rdf calculation (optional)
+#compute         rdf all rdf 100 6 2 2 2 2 3 2 4
+#fix             rdf_fix all ave/time 100 1 100 c_rdf[*] file target.rdf mode vector
+
+# msd calculation
+compute msd1 Na msd com yes
+
+
+# Combined MSD for all selected elements
+# 使用title命令设置列标题
+fix             all_msd all ave/time 100 1 100 c_msd1[4]  file msd_tracer_${T}_${file_num}.data
+
+
+# Charge Diffusion Coefficient for Na
+#variable    N_Na     equal   count(Na)           # Na原子数量
+#compute     disp_Na  Na  displace/atom          # 计算Na原子的位移
+#compute     sum_d_Na Na  reduce sum c_disp_Na[1] c_disp_Na[2] c_disp_Na[3]
+#variable    msd_Na   equal   "(c_sum_d_Na[1]^2 + c_sum_d_Na[2]^2 + c_sum_d_Na[3]^2)/v_N_Na"
+#fix         charge_Na all ave/time 100 1 100 v_msd_Na file msd_charge_Na_${T}.data
+
+
+## thermo_style
+thermo_style    custom step etotal temp vol pxx pyy pzz lx ly lz  c_msd1[4]
+thermo          ${thermo_freq}
+thermo_modify   flush yes
+dump            3 all custom ${dump_freq} mtp_${T}_nvt_${file_num}.traj id type element x y z
+dump_modify     3 element Na S Ti Zn Zr Hf
+run             ${steps}
+write_restart   msd.restart

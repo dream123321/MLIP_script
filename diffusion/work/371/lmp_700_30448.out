@@ -1,0 +1,162 @@
+LAMMPS (2 Aug 2023 - Update 3)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (../comm.cpp:98)
+  using 1 OpenMP thread(s) per MPI task
+
+The 'box' command has been removed and will be ignored
+
+Reading data file ...
+  triclinic box = (0 0 0) to (43.418484 55.441863 54.592876) with tilt (1.3561539 0.065021645 3.5799404)
+  2 by 7 by 4 MPI processor grid
+  reading atoms ...
+  5184 atoms
+  read_data CPU = 0.015 seconds
+1728 atoms in group Na
+2304 atoms in group S
+864 atoms in group Zn
+288 atoms in group Zr
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = no
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 8.5
+  ghost atom cutoff = 8.5
+  binsize = 4.25, bins = 11 14 13
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair mlip, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+Setting up cg style minimization ...
+  Unit style    : metal
+  Current step  : 0
+Per MPI rank memory allocation (min/avg/max) = 3.732 | 3.733 | 3.735 Mbytes
+   Step         PotEng         KinEng         TotEng         Press            Lx             Ly             Lz           Volume        Density    
+         0  -7728147.4      0             -7728147.4      1317.9575      43.418484      55.441863      54.592876      131416.06      2.48107      
+       100  -7728202.7      0             -7728202.7     -3598.3508      43.418484      55.441863      54.592876      131416.06      2.48107      
+Loop time of 0.67135 on 56 procs for 100 steps with 5184 atoms
+
+99.0% CPU use with 56 MPI tasks x 1 OpenMP threads
+
+Minimization stats:
+  Stopping criterion = energy tolerance
+  Energy initial, next-to-last, final = 
+     -7728147.38529246  -7728202.67468242  -7728202.74768945
+  Force two-norm initial, final = 10.505337 1.0259659
+  Force max component initial, final = 0.3077835 0.04673025
+  Final line search alpha, max atom move = 1 0.04673025
+  Iterations, force evaluations = 100 193
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.42072    | 0.48239    | 0.56436    |   5.0 | 71.85
+Neigh   | 0.052296   | 0.061618   | 0.072616   |   1.9 |  9.18
+Comm    | 0.025854   | 0.10078    | 0.19058    |  15.0 | 15.01
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 0.02656    |            |       |  3.96
+
+Nlocal:        92.5714 ave         109 max          80 min
+Histogram: 2 7 7 11 14 5 2 0 3 5
+Nghost:        1118.64 ave        1166 max        1074 min
+Histogram: 5 4 4 6 12 5 10 2 4 4
+Neighs:              0 ave           0 max           0 min
+Histogram: 56 0 0 0 0 0 0 0 0 0
+FullNghs:      9285.43 ave       11053 max        7898 min
+Histogram: 2 7 7 8 16 6 2 0 3 5
+
+Total # of neighbors = 519984
+Ave neighs/atom = 100.30556
+Neighbor list builds = 194
+Dangerous builds not checked
+System init for write_data ...
+Setting up Verlet run ...
+  Unit style    : metal
+  Current step  : 0
+  Time step     : 0.003
+Per MPI rank memory allocation (min/avg/max) = 2.623 | 2.624 | 2.627 Mbytes
+   Step         PotEng         KinEng         TotEng         Press            Lx             Ly             Lz           Volume        Density    
+         0  -7728202.7      468.96873     -7727733.8      213.3126       43.418484      55.441863      54.592876      131416.06      2.48107      
+Loop time of 3.78884e-06 on 56 procs for 0 steps with 5184 atoms
+
+125.8% CPU use with 56 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 3.789e-06  |            |       |100.00
+
+Nlocal:        92.5714 ave         109 max          80 min
+Histogram: 2 7 7 11 14 5 2 0 3 5
+Nghost:        1118.64 ave        1166 max        1074 min
+Histogram: 5 4 4 6 12 5 10 2 4 4
+Neighs:              0 ave           0 max           0 min
+Histogram: 56 0 0 0 0 0 0 0 0 0
+FullNghs:      9285.43 ave       11053 max        7898 min
+Histogram: 2 7 7 8 16 6 2 0 3 5
+
+Total # of neighbors = 519984
+Ave neighs/atom = 100.30556
+Neighbor list builds = 0
+Dangerous builds not checked
+System init for write_restart ...
+Setting up Verlet run ...
+  Unit style    : metal
+  Current step  : 0
+  Time step     : 0.003
+Per MPI rank memory allocation (min/avg/max) = 2.982 | 2.983 | 2.986 Mbytes
+   Step         TotEng          Temp          Volume          Pxx            Pyy            Pzz             Lx             Ly             Lz         c_msd1[4]   
+         0  -7727733.8      700            131416.06      3207.0723     -1770.94       -796.19457      43.418484      55.441863      54.592876      2.0493949e-29
+     20000  -7727325.1      701.99278      131416.06      3119.347       1963.0834      1852.1088      43.418484      55.441863      54.592876      27.394097    
+     40000  -7727314.1      706.93965      131416.06      2130.5853      2250.8842      903.33265      43.418484      55.441863      54.592876      50.508145    
+     60000  -7727345.6      686.65988      131416.06      988.66401      804.85765      784.45769      43.418484      55.441863      54.592876      73.369071    
+     80000  -7727340.2      707.64086      131416.06      1358.247       1979.7065      1604.992       43.418484      55.441863      54.592876      98.891145    
+    100000  -7727361.9      695.85806      131416.06      764.57314     -30.78768      -369.97629      43.418484      55.441863      54.592876      122.89966    
+    120000  -7727350.4      697.73105      131416.06      431.62733      1510.7716      836.36567      43.418484      55.441863      54.592876      145.19985    
+    140000  -7727367.7      691.25302      131416.06      2282.4767      1345.0265      1435.637       43.418484      55.441863      54.592876      171.92413    
+    160000  -7727362.2      709.10827      131416.06      2670.0558      2529.1556      1176.6626      43.418484      55.441863      54.592876      199.01554    
+    180000  -7727374.1      692.01177      131416.06      2545.9513      465.25549     -312.69064      43.418484      55.441863      54.592876      227.03306    
+    200000  -7727376.9      696.35584      131416.06      784.44083      217.36021      16.270253      43.418484      55.441863      54.592876      243.82025    
+    220000  -7727369.7      706.63693      131416.06     -423.14538      857.76044     -980.14032      43.418484      55.441863      54.592876      263.31056    
+    240000  -7727372.6      712.9765       131416.06      1246.5181      89.526764      522.94764      43.418484      55.441863      54.592876      286.17787    
+    260000  -7727378.3      704.51034      131416.06      1833.9248      2187.2759      918.52811      43.418484      55.441863      54.592876      312.38409    
+    280000  -7727377.6      693.8449       131416.06      1737.2921      919.8608       724.55693      43.418484      55.441863      54.592876      335.01193    
+    300000  -7727384.9      687.78219      131416.06      751.56075      33.576796      196.58543      43.418484      55.441863      54.592876      361.79295    
+    320000  -7727387.1      695.37692      131416.06     -92.397753      908.79931      1268.9853      43.418484      55.441863      54.592876      387.3576     
+    340000  -7727378.9      694.65577      131416.06      1824.8811     -65.272712      1128.8743      43.418484      55.441863      54.592876      413.27304    
+    350000  -7727375.6      695.05144      131416.06      1829.4497     -232.98217      1285.2733      43.418484      55.441863      54.592876      427.15781    
+Loop time of 1191.69 on 56 procs for 350000 steps with 5184 atoms
+
+Performance: 76.127 ns/day, 0.315 hours/ns, 293.701 timesteps/s, 1.523 Matom-step/s
+99.7% CPU use with 56 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 870.35     | 920.67     | 962.12     |  61.5 | 77.26
+Neigh   | 110.44     | 116.31     | 120.43     |  17.7 |  9.76
+Comm    | 93.539     | 135.71     | 195.17     | 172.4 | 11.39
+Output  | 0.004003   | 0.0069066  | 0.0099538  |   2.1 |  0.00
+Modify  | 12.993     | 18.456     | 30.228     | 112.3 |  1.55
+Other   |            | 0.5358     |            |       |  0.04
+
+Nlocal:        92.5714 ave         100 max          84 min
+Histogram: 1 1 5 8 5 14 12 3 5 2
+Nghost:        1074.89 ave        1105 max        1052 min
+Histogram: 3 5 5 7 17 9 7 2 0 1
+Neighs:              0 ave           0 max           0 min
+Histogram: 56 0 0 0 0 0 0 0 0 0
+FullNghs:      9300.11 ave       10103 max        8257 min
+Histogram: 1 1 4 5 9 13 9 7 4 3
+
+Total # of neighbors = 520806
+Ave neighs/atom = 100.46412
+Neighbor list builds = 350000
+Dangerous builds not checked
+System init for write_restart ...
+Total wall time: 0:20:32

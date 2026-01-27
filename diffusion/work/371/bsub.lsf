@@ -1,0 +1,23 @@
+#!/bin/bash
+#SBATCH --job-name 371
+#SBATCH --partition 256G56c
+##SBATCH --nodelist c0[01-40]
+#SBATCH --ntasks 56  #number of core
+##SBATCH --qos=840cpu
+
+COMMAND_std="mpirun -n 56 /share/home/xill/hj/hj_app/interface-lammps-mlip-v1.2/lmp_intel_cpu_intelmpi"
+num=3
+touch __start__
+for i in $(seq 1 $num)
+do
+  $COMMAND_std -in lmp.in -var T 1000 -var steps 350000 -var rd_seed $RANDOM -var file_num $i > lmp_1000_$i_$RANDOM.out
+  $COMMAND_std -in lmp.in -var T 900 -var steps 350000 -var rd_seed $RANDOM -var file_num $i > lmp_900_$i_$RANDOM.out
+  $COMMAND_std -in lmp.in -var T 800 -var steps 350000 -var rd_seed $RANDOM -var file_num $i > lmp_800_$i_$RANDOM.out
+  $COMMAND_std -in lmp.in -var T 700 -var steps 350000 -var rd_seed $RANDOM -var file_num $i > lmp_700_$i_$RANDOM.out
+  $COMMAND_std -in lmp.in -var T 600 -var steps 350000 -var rd_seed $RANDOM -var file_num $i > lmp_600_$i_$RANDOM.out
+  $COMMAND_std -in lmp.in -var T 500 -var steps 350000 -var rd_seed $RANDOM -var file_num $i > lmp_500_$i_$RANDOM.out
+  $COMMAND_std -in lmp.in -var T 400 -var steps 350000 -var rd_seed $RANDOM -var file_num $i > lmp_400_$i_$RANDOM.out
+  $COMMAND_std -in lmp.in -var T 300 -var steps 350000 -var rd_seed $RANDOM -var file_num $i > lmp_300_$i_$RANDOM.out
+done
+
+touch __ok__
