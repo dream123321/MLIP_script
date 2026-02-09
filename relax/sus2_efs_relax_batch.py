@@ -75,11 +75,11 @@ class MTPCalculator(Calculator):
         Returns:
         """
         properties = properties or ["energy"]
-        system_changes = system_changes or self.all_changes
+        system_changes = system_changes or all_changes
         super().calculate(atoms=atoms, properties=properties,
                           system_changes=system_changes)
 
-        cfg = PyConfiguration.from_ase_atoms(atoms, unique_numbers=unique_numbers)
+        cfg = PyConfiguration.from_ase_atoms(atoms, unique_numbers=self.unique_numbers)
         V = atoms.cell.volume
 
         self.mtpcalc.calc(cfg)
@@ -97,7 +97,6 @@ class MTPCalculator(Calculator):
                 cfg.stresses[0, 2],
                 cfg.stresses[0, 1]
             ]) * self.stress_weight / V
-
 
 class MTPRelaxer:
     """使用MTP势进行结构弛豫的类"""
