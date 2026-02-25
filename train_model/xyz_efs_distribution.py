@@ -9,7 +9,6 @@
     开发时间: 2026.1.20
 """
 
-
 from ase.io import iread
 import matplotlib.pyplot as plt
 import numpy as np
@@ -166,7 +165,8 @@ class EFSDistributionAnalyzer:
                           figsize: Tuple[int, int] = (30, 10),
                           density: bool = False,
                           output_file: str = 'efs_distribution.jpg',
-                          show_fit: bool = False) -> plt.Figure:
+                          show_fit: bool = False,
+                          log_y: bool = False) -> plt.Figure:
         """
         绘制能量、力和应力的分布图
 
@@ -177,6 +177,7 @@ class EFSDistributionAnalyzer:
         density: 如果为True，绘制概率密度分布；如果为False，绘制频数分布
         output_file: 输出图像文件名
         show_fit: 是否显示正态分布拟合曲线
+        log_y: 如果为True，y轴使用对数坐标（适用于频数或概率密度）
 
         返回:
         matplotlib Figure对象
@@ -204,33 +205,47 @@ class EFSDistributionAnalyzer:
         if self.energies:
             self._plot_single_distribution(
                 axes[0], self.energies, 'Energy (eV/atom)',
-                'skyblue', energy_bins, density, stats.get('energy', {}), show_fit
+                'skyblue', energy_bins, density, stats.get('energy', {}), show_fit, log_y
             )
 
         # 绘制力分布
         if self.forces:
             self._plot_single_distribution(
                 axes[1], self.forces, 'Force (eV/Å)',
-                'lightgreen', force_bins, density, stats.get('force', {}), show_fit
+                'lightgreen', force_bins, density, stats.get('force', {}), show_fit, log_y
             )
 
         # 绘制应力分布
         if self.stresses:
             self._plot_single_distribution(
                 axes[2], self.stresses, 'Stress (GPa)',
-                'salmon', stress_bins, density, stats.get('stress', {}), show_fit
+                'salmon', stress_bins, density, stats.get('stress', {}), show_fit, log_y
             )
 
         plt.tight_layout()
         plt.savefig(output_file, dpi=300, bbox_inches='tight')
 
-
         return fig
 
     def _plot_single_distribution(self, ax, data, xlabel, color,
-                                  bins, density, stats_dict, show_fit):
+                                  bins, density, stats_dict, show_fit, log_y=False):
         """绘制单个分布图"""
-        ylabel = 'Probability Density' if density else 'Frequency'
+        if density:
+            ylabel = 'Probability Density'
+            if log_y:
+                ylabel = 'Probability Density (log scale)'
+        else:
+            ylabel = 'Frequency'
+            if log_y:
+                ylabel = 'Frequency (log scale)'
+
+        # 如果使用对数y轴，设置yscale
+        if log_y:
+            ax.set_yscale('log')
+            # 对于频数分布，确保最小值至少为1以避免log(0)
+            # if not density:
+            #     # 在绘制直方图前，设置y轴下限
+            #     ax.set_ylim(bottom=0.5)  # log(0.5) ≈ -0.3，可以显示
 
         # 绘制直方图
         counts, bins_edges, patches = ax.hist(data, bins=bins, alpha=0.7,
@@ -268,6 +283,12 @@ class EFSDistributionAnalyzer:
 
                 if stats_dict:
                     p = norm.pdf(x, stats_dict['mean'], stats_dict['std'])
+
+                    # 如果是log坐标，需要处理拟合曲线
+                    if log_y:
+                        # 避免p=0导致的log(0)问题
+                        p = np.maximum(p, 1e-300)  # 设置一个非常小的下界
+
                     ax.plot(x, p, 'r--', linewidth=3, label='Normal fit')
 
                     # 如果已经添加了统计图例，需要更新图例
@@ -391,6 +412,8 @@ def main():
                         help='Figure size as width height (default: 30 10)')
     parser.add_argument('--dpi', type=int, default=300,
                         help='Output image DPI (default: 300)')
+    parser.add_argument('--log-y', action='store_true',
+                        help='Use log scale for y-axis (works with both frequency and probability density)')
 
     args = parser.parse_args()
 
@@ -403,7 +426,7 @@ def main():
             args.stress_bins if args.stress_bins else args.bins
         ]
 
-    # 检查fit参数是否与density一起使用
+    # 检查fit参数
     if args.fit and not args.density:
         print("Warning: --fit option only works with --density option. Fit curve will not be shown.")
         show_fit = False
@@ -423,7 +446,8 @@ def main():
         figsize=tuple(args.figsize),
         density=args.density,
         output_file=args.output,
-        show_fit=show_fit
+        show_fit=show_fit,
+        log_y=args.log_y
     )
 
     print(f"\nPlot saved to: {args.output}")
